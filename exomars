@@ -1,0 +1,50 @@
+<script>
+var bidul=500;
+var largeur=30;
+var espace=40;
+var compteur=0;
+var pv=5;
+var degat=getRandomMinMax(0,2);
+var soin=2;
+function manette()
+{
+	compteur=compteur+1;
+    alert(compteur);
+
+}
+
+function attaque()
+{
+	pv=pv-degat;
+    if(pv > 0)
+    {
+    	alert("atch " + pv + " pvs");
+    }
+	if(pv<=0)
+    {
+    	alert("Bravo");
+        pv=0
+        
+    }
+}
+function gerison()
+{
+	pv=pv+soin;
+    if(pv>=5)
+    {
+    	alert("Max de pv");
+        pv=5
+    }
+	alert(pv+"pvs");
+
+}
+
+
+function getRandomMinMax(min,max)
+{
+    return Math.floor(Math.random()*(max-min))+min;
+}
+</script>
+
+<button onclick="attaque()">Attaque</button>
+<button onclick="gerison()">Soin</button>
