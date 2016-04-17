@@ -15,6 +15,7 @@ function manette()
 
 function attaque()
 {
+	degat=getRandomMinMax(0,2);
 	pv=pv-degat;
     if(pv > 0)
     {
