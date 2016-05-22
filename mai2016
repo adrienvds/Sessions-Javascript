@@ -1,0 +1,178 @@
+<style type="text/css">
+	body {background: #000;}
+	#conteneur {width: 400px;height: 300px;border: 1px solid #333;
+    			margin: 0 auto;background: #FFF;text-align: center;}
+	h1 {text-align: center;font-variant: small-caps;color: #FFF;}
+	p {text-align: center;font-variant: small-caps;color: #FFF;}
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script type="text/javascript">
+	// Constantes du jeu
+
+	// Largeur du jeu
+	var ZONE_JEU_WIDTH = 400;
+	// Hauteur du jeu
+	var ZONE_JEU_HEIGHT = 300;
+
+	var SQUARE_LENGTH = 10;
+
+	// Variables
+	var context;
+	var boucleJeu;
+	var square = new carre(50,40);
+    var snake=new snake(square);
+    var fruit;
+    
+	// direction du serpent
+	var up = true;
+	var down = true;
+	var left = true;
+	var right = true;
+	//score
+    var score = 0;
+    
+    
+    
+    
+    
+    
+	window.addEventListener('load', function () {
+	    // On récupère l'objet canvas pour dessiner dedans
+	    context = document.getElementById('canvasElem').getContext('2d');
+
+	    // Boucle de rafraichissement du contexte 2D
+	    boucleJeu = setInterval(refreshGame, 200);
+
+	    window.document.onkeydown = deplacement;
+	}, false);
+
+
+	function refreshGame() {
+
+		if(!fruit){
+        	var x = getRandomMinMax(0,ZONE_JEU_WIDTH/10)*10;
+        	var y = getRandomMinMax(0,ZONE_JEU_HEIGHT/10)*10;
+        	fruit = new carre(x,y);
+        }
+
+	    // On efface la zone
+	    context.clearRect(0, 0, ZONE_JEU_WIDTH, ZONE_JEU_HEIGHT);
+
+        fruit.draw();
+    	snake.draw();
+
+
+	    if(down)
+        {
+			if(snake.head.y < ZONE_JEU_HEIGHT-10){
+	        	snake.move(snake.head.x,snake.head.y+10);
+			}
+	    } else if(up) {
+			if(snake.head.y > 0){
+				snake.move(snake.head.x,snake.head.y - 10)
+			}
+	    } else if(right) {
+			if(snake.head.x < ZONE_JEU_WIDTH-10){
+				snake.move(snake.head.x+10,snake.head.y)
+			}
+	    } else if(left) {
+			if(snake.head.x > 0){
+				snake.move(snake.head.x - 10,snake.head.y)
+			}
+	    }
+        
+        //square.draw();
+
+	}
+
+	function deplacement(e) {
+	    up = false;
+	    down = false;
+	    left = false;
+	    right = false;
+
+	    if(e.keyCode == 40) {
+			down = true;
+	    } else if(e.keyCode == 38) {
+			up = true;
+	    } else if(e.keyCode == 39) {
+			right = true;
+	    } else if(e.keyCode == 37) {
+			left = true;
+	    }
+	}
+    function carre(x,y,next){
+    	this.x=x;
+        this.y=y;
+        this.next=next;
+        this.draw=function(){
+		    context.fillStyle = "violet";
+	    	context.fillRect(this.x,this.y,SQUARE_LENGTH,SQUARE_LENGTH);
+            //console.log("test");
+	    }
+        this.move=function(x,y){
+        	if(this.next)
+        		this.next.move(this.x,this.y);
+        	this.x=x;
+        	this.y=y;
+        
+        }
+        
+    }
+    function snake(head){
+    	this.head=head;
+        this.draw=function(){
+            var body=this.head;
+        	body.draw();
+            while(body.next){
+            	body=body.next;
+				body.draw();
+            }
+        }
+	    this.contains = function(x,y){
+        	var body = this.head
+    		while(body.next){
+    			body=body.next;
+        		if(body.x== x && body.y == y){
+    				return true;
+    			}
+    		}
+    	    return false;
+	    }
+        this.move=function(x,y){
+        	if(this.contains(x,y)){
+            //perdu
+            
+            
+            
+            
+            }
+            if(snake.head.x == fruit.x && fruit.y == snake.head.y){
+            	
+            	var newHead = new carre(fruit.x, fruit.y)
+            	newHead.next = this.head
+            	this.head = newHead
+                fruit = null;
+                score = score + 1;
+                document.getElementById('score').innerHTML = score;
+            }
+            else { 
+        		this.head.move(x,y);
+            }
+        }
+    }
+    
+    function getRandomMinMax(min,max)
+	{
+    	return Math.floor(Math.random()*(max-min))+min;
+	}
+    
+</script>
+
+<h1>Snake</h1>
+<div id="conteneur">
+	<canvas id="canvasElem" width="400" height="300">
+		Votre navigateur ne supporte pas la fonctionnalité Canvas.
+	</canvas>
+    <p>Score actuel : <span id="score">0</span></p>
+</div>
