@@ -1,0 +1,93 @@
+function preload() {
+    
+    
+    game.load.baseURL = 'http://examples.phaser.io/assets/';
+    game.load.crossOrigin = 'anonymous';
+
+    game.load.image('phaser', 'sprites/phaser-dude.png');
+    game.load.image('orb','sprites/orb-blue.png');  
+}
+
+
+
+
+
+    var upKey;
+    var downKey;
+    var leftKey;
+    var rightKey;
+    var sprite;
+    var cote;
+    var food;
+    var width;
+    var height;
+    window.innerwindt.height
+function create() {
+    
+     food = game.add.sprite(0,0,'orb')
+    cote = 800,600
+    sprite = game.add.sprite(300,300, 'phaser');
+    //var right  = sprite(0+1,0,'phaser')
+    
+    upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+    downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    function update() {
+
+    if (upKey.isDown)
+    {
+        sprite.y--;
+    }
+    else if (downKey.isDown)
+    {
+        sprite.y++;
+    }
+
+    if (leftKey.isDown)
+    {
+        sprite.x--;
+    }
+     if (rightKey.isDown)
+    {
+        sprite.x++;
+    }
+        checkfood ();
+}
+
+
+    function checkfood (){
+      if(sprite.x==food.x){
+          console.log("miam")
+          orb.destroy();
+          if (sprite.x<0){
+              spirite.x<0;
+              
+          }
+          else if (sprite.x>width){
+              sprite.x=width;
+          }
+          
+      }
+      }  
+     function checklimite(){
+          if(sprite.x>width-sprite.width){
+              sprite.x=width-sprite.width
+          }
+          
+          
+          
+      }
+      
